@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CommuRadio - ศูนย์รวมวิทยุสื่อสาร</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS Reset */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            font-family: 'IBM Plex Sans Thai', sans-serif; 
+            overflow-x: hidden; 
+            background-color: #ffffff; /* ธีมสีขาว */
+            color: #333333;
+        }
+
+        /* ---------------------------------------------------
+           กำหนดตัวแปรสี (สีกรมท่า - เหลือง - ขาว)
+           --------------------------------------------------- */
+        :root {
+            --navy-blue: #002D62; /* สีกรมท่า */
+            --yellow-accent: #FFC000; /* สีเหลือง */
+            --white: #FFFFFF;
+            --light-gray: #F8F9FA;
+        }
+        
+        /* ---------------------------------------------------
+           Sticky Navigation (สีกรมท่า)
+           --------------------------------------------------- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--navy-blue);
+            color: var(--white);
+            padding: 15px 40px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .logo { 
+            font-size: 1.8rem; 
+            font-weight: 700; 
+            color: var(--yellow-accent); /* โลโก้สีเหลือง */
+        }
+        nav ul { list-style: none; display: flex; gap: 25px; }
+        nav a { 
+            color: var(--white); 
+            text-decoration: none; 
+            font-weight: 600; 
+            transition: color 0.3s; 
+        }
+        nav a:hover { color: var(--yellow-accent); } /* Hover เป็นสีเหลือง */
+        
+        /* CSS Animation สำหรับ Hero Banner */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ---------------------------------------------------
+           Hero Banner (100vh พร้อมรูปพื้นหลัง)
+           --------------------------------------------------- */
+        .hero {
+            height: 100vh;
+            /* ภาพพื้นหลังวิทยุสื่อสาร พร้อมย้อมสี overlay สีกรมท่าให้ตัวหนังสือเด่นชัด */
+            background: linear-gradient(rgba(0, 45, 98, 0.7), rgba(0, 45, 98, 0.8)), 
+                        url('https://images.unsplash.com/photo-1517420879255-ae365c01a447?q=80&w=2000&auto=format&fit=crop') center/cover no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: var(--white);
+            text-align: center;
+            padding: 0 20px;
+        }
+        .hero h1 {
+            font-size: 3.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--yellow-accent); /* Headline สีเหลือง */
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+            animation: fadeInUp 1s ease-out;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            max-width: 600px;
+            animation: fadeInUp 1.2s ease-out;
+        }
+        .hero .cta-btn {
+            padding: 15px 35px;
+            background-color: var(--yellow-accent);
+            color: var(--navy-blue); /* ตัวหนังสือสีกรมท่า */
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 5px;
+            transition: background 0.3s, transform 0.3s;
+            animation: fadeInUp 1.4s ease-out;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .hero .cta-btn:hover { 
+            background-color: #e6ad00; 
+            transform: scale(1.05);
+        }
+
+        /* ---------------------------------------------------
+           Section: Content Cards (4 ใบ)
+           --------------------------------------------------- */
+        .cards-section { 
+            padding: 80px 20px; 
+            background-color: var(--light-gray); 
+        }
+        .section-title {
+            text-align: center;
+            color: var(--navy-blue);
+            font-size: 2.2rem;
+            margin-bottom: 40px;
+            font-weight: 700;
+        }
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .card {
+            background: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            border-bottom: 5px solid var(--yellow-accent); /* ตัดขอบล่างด้วยสีเหลือง */
+            transition: transform 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-10px); /* Hover Effect */
+        }
+        .card img { 
+            width: 100%; 
+            height: 220px; 
+            object-fit: cover; 
+        }
+        .card-content { 
+            padding: 25px; 
+            display: flex; 
+            flex-direction: column; 
+            flex-grow: 1; 
+        }
+        .card-title { 
+            font-size: 1.4rem; 
+            margin-bottom: 12px; 
+            color: var(--navy-blue); 
+            font-weight: 700;
+        }
+        .card-desc { 
+            color: #555; 
+            margin-bottom: 25px; 
+            flex-grow: 1; 
+            line-height: 1.6;
+        }
+        .card-btn {
+            align-self: flex-start;
+            padding: 10px 20px;
+            background-color: var(--navy-blue);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        .card-btn:hover { 
+            background-color: var(--yellow-accent); 
+            color: var(--navy-blue);
+        }
+
+        /* ---------------------------------------------------
+           Footer
+           --------------------------------------------------- */
+        footer {
+            background: var(--navy-blue);
+            color: var(--white);
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 4px solid var(--yellow-accent);
+        }
+        footer p { margin-bottom: 15px; }
+
+        /* ---------------------------------------------------
+           Feature: Back to Top Button
+           --------------------------------------------------- */
+        #backToTop {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            background-color: var(--yellow-accent);
+            color: var(--navy-blue);
+            border: none;
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            display: none; /* ซ่อนไว้ก่อน จะแสดงเมื่อเลื่อนเมาส์ */
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: background 0.3s, transform 0.3s;
+        }
+        #backToTop:hover { 
+            background-color: #e6ad00; 
+            transform: scale(1.1);
+        }
+        
+        /* ---------------------------------------------------
+           Responsive Design
+           --------------------------------------------------- */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            nav ul { display: none; /* ซ่อนเมนูในมือถือชั่วคราว */ }
+            header { justify-content: center; padding: 15px; }
+            #backToTop { bottom: 20px; right: 20px; width: 45px; height: 45px; font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body id="top">
+
+    <header>
+        <div class="logo">CommuRadio</div>
+        <nav>
+            <ul>
+                <li><a href="#home">หน้าแรก</a></li>
+                <li><a href="#products">สินค้าและบริการ</a></li>
+                <li><a href="#contact">ติดต่อเรา</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <h1>เชื่อมต่อทุกสถานการณ์</h1>
+        <p>ศูนย์รวมวิทยุสื่อสาร อุปกรณ์เสริม และระบบโครงข่ายสื่อสารแบบครบวงจร สำหรับหน่วยงานรัฐ เอกชน และประชาชนทั่วไป</p>
+        <a href="#products" class="cta-btn">ดูสินค้าทั้งหมด</a>
+    </section>
+
+    <section id="products" class="cards-section">
+        <h2 class="section-title">อุปกรณ์และบริการของเรา</h2>
+        <div class="cards-grid">
+            
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1627844642677-8b33cb7ee016?q=80&w=800&auto=format&fit=crop" alt="วิทยุสื่อสารสำหรับประชาชน">
+                <div class="card-content">
+                    <h3 class="card-title">วิทยุสื่อสารภาคประชาชน (CB)</h3>
+                    <p class="card-desc">วิทยุสื่อสารคลื่นความถี่ 245 MHz (เครื่องแดง) สำหรับประชาชนทั่วไป ใช้งานง่าย ไม่ต้องสอบ เหมาะสำหรับโรงงานและร้านอาหาร</p>
+                    <a href="#" class="card-btn">รายละเอียดเพิ่มเติม</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1584904571953-e99f43fc0e73?q=80&w=800&auto=format&fit=crop" alt="วิทยุสื่อสารสำหรับหน่วยงาน">
+                <div class="card-content">
+                    <h3 class="card-title">วิทยุสื่อสารหน่วยงาน (VHF/UHF)</h3>
+                    <p class="card-desc">วิทยุสื่อสารเครื่องดำ สำหรับเจ้าหน้าที่รัฐ กู้ภัย และหน่วยงานเอกชนที่ได้รับอนุญาต ทนทาน รับส่งสัญญาณได้ไกล</p>
+                    <a href="#" class="card-btn">รายละเอียดเพิ่มเติม</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1588607621115-bb80d8f0f353?q=80&w=800&auto=format&fit=crop" alt="อุปกรณ์เสริมวิทยุสื่อสาร">
+                <div class="card-content">
+                    <h3 class="card-title">อุปกรณ์เสริม (Accessories)</h3>
+                    <p class="card-desc">รวมอุปกรณ์เสริมทุกชนิด เช่น แบตเตอรี่, เสาอากาศ, ไมค์หูฟัง, แท่นชาร์จ และสายนำสัญญาณคุณภาพสูง</p>
+                    <a href="#" class="card-btn">รายละเอียดเพิ่มเติม</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1611105432420-1a76f2dfcf9c?q=80&w=800&auto=format&fit=crop" alt="บริการติดตั้งและซ่อมบำรุง">
+                <div class="card-content">
+                    <h3 class="card-title">บริการซ่อมและตั้งสถานี</h3>
+                    <p class="card-desc">บริการรับซ่อมวิทยุสื่อสารทุกรุ่น พร้อมบริการให้คำปรึกษาและติดตั้งเสาสัญญาณสถานีวิทยุสื่อสารโดยช่างผู้เชี่ยวชาญ</p>
+                    <a href="#" class="card-btn">รายละเอียดเพิ่มเติม</a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer id="contact">
+        <p>CommuRadio &copy; 2026 | ศูนย์รวมวิทยุสื่อสารอันดับ 1</p>
+        <p style="color: var(--yellow-accent);">โทร: 02-XXX-XXXX | อีเมล: contact@commuradio.com</p>
+    </footer>
+
+    <button id="backToTop" title="กลับสู่ด้านบน">&#8679;</button>
+
+    <script>
+        let mybutton = document.getElementById("backToTop");
+        
+        // เมื่อเลื่อนหน้าจอลงมาเกิน 300px ให้แสดงปุ่ม
+        window.onscroll = function() {
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                mybutton.style.display = "block";
+            } else {
+                mybutton.style.display = "none";
+            }
+        };
+        
+
+        mybutton.onclick = function() {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        };
+    </script>
+</body>
+</html>
